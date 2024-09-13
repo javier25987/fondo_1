@@ -1,0 +1,67 @@
+===========================
+=                         =
+=    FONDO SAN JAVIER     =
+=                         =
+===========================
+> Nombre:Javier Cortes
+> Numero:0
+> Puestos:2
+===========================
+> Multas pagadas:0
+> Valor multa:3,000
+> TOTAL multas:0
+===========================
+> Cuotas pagadas:2
+> Valor cuota:10,000
+> TOTAL cuotas:40,000
+===========================
+> Tesorero:1
+> Total pagado:40,000
+===========================
+> Fecha:2024.08.11
+> Hora:03:58
+======================================================
+=                         =
+=    FONDO SAN JAVIER     =
+=                         =
+===========================
+> Nombre:Ricardo Zamora
+> Numero:1
+> Puestos:10
+===========================
+> Multas pagadas:0
+> Valor multa:3,000
+> TOTAL multas:0
+===========================
+> Cuotas pagadas:10
+> Valor cuota:10,000
+> TOTAL cuotas:1,000,000
+===========================
+> Tesorero:1
+> Total pagado:1,000,000
+===========================
+> Fecha:2024.08.17
+> Hora:00:43
+======================================================
+=                         =
+=    FONDO SAN JAVIER     =
+=                         =
+===========================
+> Nombre:Ricardo Torres
+> Numero:2
+> Puestos:10
+===========================
+> Multas pagadas:0
+> Valor multa:3,000
+> TOTAL multas:0
+===========================
+> Cuotas pagadas:10
+> Valor cuota:10,000
+> TOTAL cuotas:1,000,000
+===========================
+> Tesorero:1
+> Total pagado:1,000,000
+===========================
+> Fecha:2024.08.17
+> Hora:00:44
+===========================

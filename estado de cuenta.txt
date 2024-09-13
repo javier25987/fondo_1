@@ -1,0 +1,27 @@
+============================== Fondo San Javier ==============================
+
+     № 0: Javier Cortes - 2 puesto(s)
+
+los siguientes datos son validos para la fecha "2024/08/19 02:20" para otras
+fechas no se confirma su veracidad.
+
+Pago de cuotas:
+- Cuotas pagas: 2
+- Cuotas que se deben: 31
+- Multas pendientes: 63
+- Estado: activo
+- Capital: 40,000
+- Dinero pagado en multas: 0
+- Multas extra: 0 
+- Numero de telefono: _
+
+Prestamos:
+- Prestamos solitados: 2
+- Dinero retirado en prestamos: 1,010,000
+- Deudas actuales en prestamos: 10000-1000000
+- Intereses vencidos por un prestamos: 0-0
+- Fiadores por prestamos: n-1,2
+- Deudas con fiadores: n-500000,500000
+
+- Deudas por fiador: 0
+- Fiador de: -
