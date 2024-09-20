@@ -32,7 +32,7 @@ st.session_state.usuario_actual_rifas = -1
 
 st.title('Menu de inicio')
 
-tab_1, tab_2 = st.tabs(['Que es el menu?', 'Informacion de el programa'])
+tab_1, tab_2 = st.tabs(['Que es el menu?', 'Funciones extra'])
 
 with tab_1:
     c_1, c_2 = st.columns([2, 3])
@@ -79,3 +79,11 @@ with tab_1:
             la tabla de datos actual.
             '''
         )
+
+with tab_2:
+    st.write("Cargar multas para todos los usuarios.")
+
+    if st.button("Cargar Multas"):
+        Funciones.arreglar_todos_los_asuntos()
+        st.success("Proceso finalizado, todas las multas han sido cargadas.",
+                   icon="✅")

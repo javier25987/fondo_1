@@ -17,7 +17,7 @@ if st.sidebar.button('Buscar'):
     if 0 <= index_de_usuario < st.session_state.usuarios:
         if df['estado'][index_de_usuario] == 'activo':
             Funciones.arreglar_asuntos(
-                index_usuario=index_de_usuario, cobrar_multas=st.session_state.cobrar_multas
+                index_usuario=index_de_usuario
             )
             df = pd.read_csv(st.session_state.nombre_df)
             if st.session_state.anular_usuarios and (df['multas'][index_de_usuario].count('n') < 47):

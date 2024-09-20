@@ -2,7 +2,6 @@ import pandas as pd
 import streamlit as st
 import subprocess
 import datetime
-import tqdm
 import json
 import os
 
@@ -218,8 +217,8 @@ def crear_ajustes_de_el_programa():
                "fecha de cierre": "2024/12/01",
                "numero de creacion": 1,
                "nombre df": "",
-               "path programa": "C:\\Users\\ferna\\PycharmProjects\\fondo",
-               "enlace repo": "https://github.com/javier25987/fondo",
+               "path programa": f"{os.getcwd()}",
+               "enlace repo": "",
                "commits hechos": 0,
                "r1 estado": False,
                "r1 numero de boletas": 0,
@@ -276,12 +275,11 @@ def sumar_una_multa(s: list, semana: int = 0):
     return s
 
 
-def arreglar_asuntos(index_usuario: int, cobrar_multas: bool):
+def arreglar_asuntos(index_usuario: int):
     with open('ajustes.json', 'r') as f:
         ajustes = json.load(f)
         calendario = ajustes['calendario'].split('-')
         f.close()
-
 
     df = pd.read_csv(ajustes['nombre df'])
 
@@ -308,7 +306,7 @@ def arreglar_asuntos(index_usuario: int, cobrar_multas: bool):
                 if cuotas[i] == 'p':
                     pass
                 else:
-                    if cobrar_multas:
+                    if ajustes["cobrar multas"]:
                         multas = sumar_una_multa(multas, i)
 
                     cuotas = modificar_string(cuotas, i, 'd')
@@ -518,11 +516,7 @@ def crear_nuevo_cheque(
     cheque = list(map(lambda x: x + '\n', cheque))
     cheque[-1] = cheque[-1].strip()
 
-    with open('cheque_de_cuotas.txt', 'a', encoding='utf_8') as f:
-        f.write('')
-        f.close()
-
-    with open('cheque_de_cuotas.txt', 'a', encoding='utf_8') as f:
+    with open('cheque_de_cuotas.txt', 'w', encoding='utf_8') as f:
         f.write(''.join(cheque))
         f.close()
 
@@ -741,7 +735,7 @@ def viavilidad_dinero(index: int, valor_de_el_prestamo: int, fiadores: str = '',
                 elif (capital + suma_de_deudas) >= valor_de_el_prestamo:
                     return True
                 else:
-                    st.error(f'Apesar de tener fiadores no alcanza para este prestamo.', icon="🚨")
+                    st.error(f'A pesar de tener fiadores no alcanza para este prestamo.', icon="🚨")
                     return False
             return False
         except:
@@ -1237,21 +1231,61 @@ def crear_tablas_talonarios(boletas: str):
 
 
 def cerrar_una_rifa(rifa: str):
+    with open('ajustes.json', 'r') as f:
+        ajustes = json.load(f)
+        f.close()
+
     df = pd.read_csv(st.session_state.nombre_df)
 
-    nombre_rifa = f"r{rifa} deudas"
+    if ajustes[f"r{rifa} estado"]:
+        fecha_de_cierre = ajustes[f"r{rifa} fecha de cierre"]
+        fecha_de_cierre = fecha_string_formato(fecha_de_cierre)
 
-    numeros = tuple(df["numero"])
-    nombres = tuple(df["nombre"])
-    deudas = tuple(df[nombre_rifa])
+        if fecha_de_cierre < datetime.datetime.now():
+            print(f"Iniciando el cierre de la rifa {rifa}")
 
-    for i in range(len(nombres)):
-        if deudas[i] > 0:
-            generar_prestamo(numeros[i], deudas[i])
-            df.loc[numeros[i], nombre_rifa] = 0
-            print(f"> se ha generado un prestamo para: {nombres[i]}; \t por {deudas[i]}")
+            nombre_rifa = f"r{rifa} deudas"
 
-    df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+            numeros = tuple(df["numero"])
+            nombres = tuple(df["nombre"])
+            deudas = tuple(df[nombre_rifa])
 
-    df.to_csv(st.session_state.nombre_df)
+            for i in range(len(nombres)):
+                if deudas[i] > 0:
+                    generar_prestamo(numeros[i], deudas[i])
+                    df.loc[numeros[i], nombre_rifa] = 0
+                    print(f"> Se ha generado un prestamo para: {nombres[i]}; \t por {deudas[i]}")
 
+            df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+
+            df.to_csv(st.session_state.nombre_df)
+
+            ajustes[f"r{rifa} estado"] = False
+            with open('ajustes.json', 'w') as f:
+                json.dump(ajustes, f)
+                f.close()
+
+            print(f"El proceso ha terminado exitosamente...")
+            st.success('Rifa cerrada correctamente.', icon="✅")
+        else:
+            st.error(
+                "La rifa no puede ser cerrada antes de la fecha de cierre.",
+                icon="🚨"
+            )
+    else:
+        st.error(
+            "La rifa no puede ser cerrada, ya que esta no esta activa.",
+            icon="🚨"
+        )
+
+
+def arreglar_todos_los_asuntos():
+    with open('ajustes.json', 'r') as f:
+        ajustes = json.load(f)
+        f.close()
+
+    print("Iniciando proceso, arreglar asuntos de todos los usuarios,")
+    for i in range(ajustes["usuarios"]):
+        arreglar_asuntos(i)
+        print(f"> Proceso exitosamente aplicado a {i}")
+    print("Proceso finalizado")

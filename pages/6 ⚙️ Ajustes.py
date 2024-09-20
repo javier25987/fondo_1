@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import os
 import json
 import Funciones
 
@@ -30,14 +31,21 @@ except:
 
 if not (control_1 and control_2):
 
-    st.header('Creacion de archivos para control y almacenamiento.')
+    st.header('Creacion de archivos de ajustes y almacenamiento.')
+
+    st.info(
+        """En caso de necesitarse crear el archivo de ajustes y la tabla
+        de socios cree primero el archivo de ajustes y despues la tabla
+        ese orden es el adecuado para la operacion""",
+        icon="ℹ️"
+    )
 
     c1_1, c1_2 = st.columns(2)
 
     with c1_1:
         if st.button('crear ajustes de el programa'):
             Funciones.crear_ajustes_de_el_programa()
-            st.success('Los ajustes han sido configurados', icon="✅")
+            st.success('Los ajustes han sido creados', icon="✅")
 
     with c1_2:
         if st.button('Crear nueva tabla de socios'):
@@ -345,10 +353,9 @@ else:
             st.subheader('Ruta de el programa')
 
             st.write(f'Ruta de el programa: {ajustes['path programa']}')
-            n_ruta = st.text_input('Nueva ruta de el programa.')
 
-            if st.button('Modificar', key='00017'):
-                ajustes['path programa'] = n_ruta
+            if st.button('Añadir ruta', key='00017'):
+                ajustes['path programa'] = os.getcwd()
                 with open('ajustes.json', 'w') as f:
                     json.dump(ajustes, f)
                     f.close()
@@ -677,30 +684,21 @@ else:
                 st.header("Rifa 1")
                 if st.button("Cerrar rifa", key="00056"):
                     Funciones.cerrar_una_rifa('1')
-                    st.success('Rifa cerrada correctamente.', icon="✅")
-                    st.rerun()
 
                 st.divider()
 
                 st.header("Rifa 2")
                 if st.button("Cerrar rifa", key="00057"):
                     Funciones.cerrar_una_rifa('2')
-                    st.success('Rifa cerrada correctamente.', icon="✅")
-                    st.rerun()
 
                 st.divider()
 
                 st.header("Rifa 3")
                 if st.button("Cerrar rifa", key="00058"):
                     Funciones.cerrar_una_rifa('3')
-                    st.success('Rifa cerrada correctamente.', icon="✅")
-                    st.rerun()
 
                 st.divider()
 
                 st.header("Rifa 4")
                 if st.button("Cerrar rifa", key="00059"):
                     Funciones.cerrar_una_rifa('4')
-                    st.success('Rifa cerrada correctamente.', icon="✅")
-                    st.rerun()
-
