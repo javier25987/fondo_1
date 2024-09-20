@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import subprocess
 import datetime
+import tqdm
 import json
 import os
 
@@ -1236,4 +1237,21 @@ def crear_tablas_talonarios(boletas: str):
 
 
 def cerrar_una_rifa(rifa: str):
-    pass
+    df = pd.read_csv(st.session_state.nombre_df)
+
+    nombre_rifa = f"r{rifa} deudas"
+
+    numeros = tuple(df["numero"])
+    nombres = tuple(df["nombre"])
+    deudas = tuple(df[nombre_rifa])
+
+    for i in range(len(nombres)):
+        if deudas[i] > 0:
+            generar_prestamo(numeros[i], deudas[i])
+            df.loc[numeros[i], nombre_rifa] = 0
+            print(f"> se ha generado un prestamo para: {nombres[i]}; \t por {deudas[i]}")
+
+    df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+
+    df.to_csv(st.session_state.nombre_df)
+
