@@ -75,12 +75,14 @@ else:
         index_row = st.number_input('Index de la fila.', value=0, step=1)
 
         columna_col = st.selectbox('Columna a modificar', (
-            'nombre', 'puestos', 'numero_telefonico', 'revisiones', 'cuotas', 'multas',
-            'tesorero', 'estado', 'capital', 'aporte_a_multas', 'deudas', 'multas_extra',
-            'prestamos hechos', 'deudas en prestamos', 'intereses vencidos',
-            'revisiones de intereses', 'intereses en prestamos', 'fiadores',
-            'deudas con fiadores', 'fechas de pagos', 'deudas por fiador',
-            'fiador de', 'anotaciones'
+            'nombre', 'numero_telefonico', 'cuotas', 'multas', 'tesorero', 'estado',
+            'deudas en prestamos', 'intereses vencidos', 'revisiones de intereses',
+            'intereses en prestamos', 'fiadores', 'deudas con fiadores',
+            'fechas de pagos', 'fiador de', 'anotaciones', 'r1 boletas', 'r2 boletas',
+            'r3 boletas', 'r4 boletas', 'puestos', 'revisiones', 'capital',
+            'aporte_a_multas', 'deudas', 'multas_extra', 'prestamos hechos',
+            'dinero en prestamos', 'dinero por si mismo', 'deudas por fiador',
+            'r1 deudas', 'r2 deudas', 'r3 deudas', 'r4 deudas'
         ))
 
         st.subheader('Modificar texto.')
@@ -88,7 +90,13 @@ else:
         nuevo_valor_texto = st.text_input('Nuevo valor de texto.')
 
         if st.button('Modificar texto'):
-            if True:
+            if columna_col in [
+                'nombre', 'numero_telefonico', 'cuotas', 'multas', 'tesorero', 'estado',
+                'deudas en prestamos', 'intereses vencidos', 'revisiones de intereses',
+                'intereses en prestamos', 'fiadores', 'deudas con fiadores',
+                'fechas de pagos', 'fiador de', 'anotaciones', 'r1 boletas','r2 boletas',
+                'r3 boletas','r4 boletas',
+            ]:
                 df.at[index_row, columna_col] = str(nuevo_valor_texto)
                 df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
                 df.to_csv(st.session_state.nombre_df)
@@ -102,7 +110,12 @@ else:
         nuevo_valor_numero = st.number_input('Nuevo valor numerico.', value=0, step=1)
 
         if st.button('Modificar numero'):
-            if True:
+            if columna_col in [
+                'puestos', 'revisiones', 'capital', 'aporte_a_multas', 'deudas',
+                'multas_extra', 'prestamos hechos', 'dinero en prestamos',
+                'dinero por si mismo', 'deudas por fiador', 'r1 deudas', 'r2 deudas',
+                'r3 deudas', 'r4 deudas'
+            ]:
                 df.at[index_row, columna_col] = nuevo_valor_numero
                 df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
                 df.to_csv(st.session_state.nombre_df)

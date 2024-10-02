@@ -49,7 +49,15 @@ else:
 
     st.divider()
 
-    st.table(Funciones.string_calendario_usuario(index=index))
+    df_1, df_2 = Funciones.string_calendario_usuario(index=index)
+
+    tabla_1, tabla_2 = st.columns(2)
+
+    with tabla_1:
+        st.table(df_1)
+
+    with tabla_2:
+        st.table(df_2)
 
     numero_cuotas_a_pagar = sum(1 for i in df['cuotas'][index] if i != 'p')
     numero_cuotas_a_pagar = 10 if numero_cuotas_a_pagar > 10 else numero_cuotas_a_pagar

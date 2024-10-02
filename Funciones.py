@@ -105,9 +105,9 @@ def r_multas_tesoreros(s):
 def r_cuotas(s):
     match s:
         case 'p':
-            return 'pago'
+            return '✅ pago'
         case 'd':
-            return 'debe'
+            return '🚨 debe'
         case _:
             return ' '
 
@@ -130,17 +130,21 @@ def string_calendario_usuario(index: int = 0):
     tesoreros = [i for i in df['tesorero'][index]]
     tesoreros = list(map(r_multas_tesoreros, tesoreros))
 
-    s_df = pd.DataFrame({'fechas 1': calendario[:25],
-                         'cuotas 1': cuotas[:25],
-                         'tesorero 1': tesoreros[:25],
-                         'multas 1': multas[:25],
-                         'fechas 2': calendario[25:],
-                         'cuotas 2': cuotas[25:],
-                         'tesorero 2': tesoreros[25:],
-                         'multas 2': multas[25:]})
+    df_1 = pd.DataFrame({
+        'fechas': calendario[:25],
+        'cuotas': cuotas[:25],
+        'tesorero': tesoreros[:25],
+        'multas': multas[:25]
+    })
 
+    df_2 = pd.DataFrame({
+        'fechas': calendario[25:],
+        'cuotas': cuotas[25:],
+        'tesorero': tesoreros[25:],
+        'multas': multas[25:]
+    })
 
-    return s_df
+    return df_1, df_2
 
 
 def crear_data_frame_principal():
