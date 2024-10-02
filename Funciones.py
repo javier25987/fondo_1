@@ -1413,18 +1413,5 @@ def menu_para_insertar_socio(
         st.rerun()
 
 
-
-
-
-
-
-
 if __name__ == "__main__":
     pass
-
-
-
-
-
-
-
