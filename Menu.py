@@ -22,6 +22,7 @@ st.session_state.usuarios = ajustes['usuarios']
 st.session_state.anular_usuarios = ajustes['anular usuarios']
 st.session_state.cobrar_multas = ajustes['cobrar multas']
 st.session_state.nombre_df = ajustes['nombre df']
+st.session_state.modificacion_avanzada = False
 
 st.session_state.nombre_para_busqueda = ''
 

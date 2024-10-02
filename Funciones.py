@@ -1,3 +1,5 @@
+import time
+
 import pandas as pd
 import streamlit as st
 import subprocess
@@ -1293,3 +1295,136 @@ def arreglar_todos_los_asuntos():
         arreglar_asuntos(i)
         print(f"> Proceso exitosamente aplicado a {i}")
     print("Proceso finalizado")
+
+
+def modificar_valor_en_csv(
+    index: int = 0, text: bool = True, nuevo_valor = "", columna: str = ""
+) -> None:
+    df = pd.read_csv(st.session_state.nombre_df)
+
+    if text:
+        df.at[index, columna] = str(nuevo_valor)
+    else:
+        df.at[index, columna] = nuevo_valor
+
+    df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+    df.to_csv(st.session_state.nombre_df)
+    st.success('Valor modificado', icon="✅")
+    st.balloons()
+    time.sleep(0.5)
+    st.rerun()
+
+
+def sumar_y_restar_multas(s, n, sumar=True) -> str:
+    numero = lambda x: int(x) if x != "n" else 0
+    s = [numero(i) for i in s]
+    if sumar:
+        for i in range(50):
+            if s[i] < 9:
+                diferencia = 9 - s[i]
+                if n - diferencia > 0:
+                    n -= diferencia
+                    s[i] =  9
+                else:
+                    s[i] += n
+                    n = 0
+            if n <= 0:
+                break
+    else:
+        for i in range(50):
+            if n >= s[i]:
+                n -= s[i]
+                s[i] = 0
+            else:
+                s[i] -= n
+                n = 0
+            if n <= 0:
+                break
+    return "".join(
+        map(
+            lambda x: "n" if x == 0 else str(x),
+            s
+        )
+    )
+
+
+def sumar_y_quitar_cuotas(s, n, sumar=True) -> str:
+    s = [i for i in s]
+    if sumar:
+        for i in range(50):
+            if s[i] != "p":
+                s[i] = "p"
+                n -= 1
+            if n <= 0:
+                break
+    else:
+        for i in range(49, -1, -1):
+            if s[i] == "p":
+                s[i] = "n"
+                n -= 1
+            if n <= 0:
+                break
+    return "".join(s)
+
+
+def sumar_y_quitar_deudas(s, n, sumar=True) -> str:
+    s = [i for i in s]
+    if sumar:
+        for i in range(50):
+            if s[i] == "n":
+                s[i] = "d"
+                n -= 1
+            if n <= 0:
+                break
+    else:
+        for i in range(49, -1, -1):
+            if s[i] == "d":
+                s[i] = "n"
+                n -= 1
+            if n <= 0:
+                break
+    return "".join(s)
+
+
+@st.dialog('Insertar un nuevo socio')
+def menu_para_insertar_socio(
+    nombre: str = "", puestos: int = 0, telefono: str = ""
+) -> None:
+
+    st.divider()
+
+    st.subheader("nombre:")
+    st.write(nombre.title())
+    st.subheader("puestos:")
+    st.write(puestos)
+    st.subheader("telefono:")
+    st.write(telefono)
+
+    st.divider()
+
+    if st.button("Insertar"):
+        insertar_socios(
+            nombre=nombre,
+            puestos=puestos,
+            numero_telefonico=telefono
+        )
+        st.toast('Nuevo socio añadido', icon='🎉')
+        time.sleep(1.5)
+        st.rerun()
+
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    pass
+
+
+
+
+
+
+
