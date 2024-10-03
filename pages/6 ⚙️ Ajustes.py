@@ -16,7 +16,10 @@ try:
 
     control_1 = True
 except:
-    st.error('Se necesita un archivo de ajustes.', icon="🚨")
+    st.error(
+        'Se necesita un archivo de ajustes.',
+        icon="🚨"
+    )
 
 try:
     with open('ajustes.json', 'r') as j_a:
@@ -45,12 +48,18 @@ if not (control_1 and control_2):
     with c1_1:
         if st.button('crear ajustes de el programa'):
             Funciones.crear_ajustes_de_el_programa()
-            st.success('Los ajustes han sido creados', icon="✅")
+            st.success(
+                'Los ajustes han sido creados',
+                icon="✅"
+            )
 
     with c1_2:
         if st.button('Crear nueva tabla de socios'):
             Funciones.crear_data_frame_principal()
-            st.success('La tabla ha sido creada', icon="✅")
+            st.success(
+                'La tabla ha sido creada',
+                icon="✅"
+            )
 
 else:
     if st.session_state['preguntar clave']:
@@ -70,10 +79,13 @@ else:
             ajustes = json.load(f)
             f.close()
 
-        tab_1, tab_2, tab_3, tab_4, tab_5, tab_6, tab_7, tab_8, tab_9 = st.tabs([
-            'Calendario', 'Cuotas y multas', 'Contraseñas', 'Intereses', 'Usuarios',
-            'Fechas', 'Tabla de socios', 'Guardar datos', 'Rifas'
-        ])
+        tab_1, tab_2, tab_3, tab_4, tab_5, tab_6, tab_7, tab_8, tab_9 = st.tabs(
+            [
+                'Calendario', 'Cuotas y multas', 'Contraseñas', 'Intereses',
+                'Usuarios', 'Fechas', 'Tabla de socios', 'Guardar datos',
+                'Rifas'
+            ]
+        )
 
         with tab_1:
             st.header('Calendario')
@@ -89,12 +101,18 @@ else:
                 #calendario += ['____/__/__']
 
                 st.write(f'Hora de corte: {hora_de_corte}')
-                st.table(pd.DataFrame({'columna 1': calendario[:10],
-                                       'columna 2': calendario[10:20],
-                                       'columna 3': calendario[20:30],
-                                       'columna 4': calendario[30:40],
-                                       'columna 5': calendario[40:]
-                                       }))
+                st.table(
+                    pd.DataFrame(
+                        {
+                            'columna 1': calendario[:10],
+                            'columna 2': calendario[10:20],
+                            'columna 3': calendario[20:30],
+                            'columna 4': calendario[30:40],
+                            'columna 5': calendario[40:]
+
+                        }
+                    )
+                )
 
             st.subheader('Crear calendario.')
 
@@ -131,13 +149,22 @@ else:
             st.header('Valor de la cuota por puesto y por multa.')
 
             st.info(
-                'Por favor al ingresar cantidades en miles no ingrese las comas, solo el numero plano.',
+                """
+                Por favor al ingresar cantidades en miles no ingrese las comas,
+                solo el numero plano.
+                """,
                 icon="ℹ️"
             )
 
             st.subheader('Por puesto.')
-            st.write(f'Valor de la cuota por puesto: {'{:,}'.format(ajustes['valor cuota'])}')
-            n_cuota_puesto = st.number_input('Nuevo valor de la cuota.', value=0, step=1)
+            st.write(
+                f'Valor de la cuota por puesto: {'{:,}'.format(ajustes['valor cuota'])}'
+            )
+            n_cuota_puesto = st.number_input(
+                'Nuevo valor de la cuota.',
+                value=0,
+                step=1
+            )
 
             if st.button('Modificar.', key='00001'):
                 ajustes['valor cuota'] = n_cuota_puesto
@@ -151,8 +178,12 @@ else:
                 st.rerun()
 
             st.subheader('Por multa.')
-            st.write(f'Valor de la multa por puesto: {'{:,}'.format(ajustes['valor multa'])}')
-            n_cuota_multa = st.number_input('Nuevo valor de la multa.', value=0, step=1)
+            st.write(
+                f'Valor de la multa por puesto: {'{:,}'.format(ajustes['valor multa'])}'
+            )
+            n_cuota_multa = st.number_input(
+                'Nuevo valor de la multa.', value=0, step=1
+            )
 
             if st.button('Modificar', key='00002'):
                 ajustes['valor multa'] = n_cuota_multa

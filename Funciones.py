@@ -10,10 +10,10 @@ import os
 def modificar_string(s: str, index_s: int, new_elemento: str):
     lista_s = [i for i in s]
     lista_s[index_s] = new_elemento
-    return ''.join(lista_s)
+    return "".join(lista_s)
 
 def fecha_string_formato(fecha: str):
-    s = fecha.split('/')
+    s = fecha.split("/")
     s = list(map(int, s))
     return datetime.datetime(*s)
 
@@ -114,7 +114,7 @@ def r_cuotas(s):
             return ' '
 
 
-def string_calendario_usuario(index: int = 0):
+def tablas_para_cuotas_y_multas(index: int = 0):
     with open('ajustes.json', 'r') as f:
         ajustes = json.load(f)
         calendario = ajustes['calendario']
@@ -124,6 +124,7 @@ def string_calendario_usuario(index: int = 0):
 
     calendario = calendario.split('-')
     calendario = list(map(lambda x: x[:-3], calendario))
+    numeros = [str(i) for i in range(1, 51)]
 
     multas = [i for i in df['multas'][index]]
     multas = list(map(r_multas_tesoreros, multas))
@@ -132,19 +133,25 @@ def string_calendario_usuario(index: int = 0):
     tesoreros = [i for i in df['tesorero'][index]]
     tesoreros = list(map(r_multas_tesoreros, tesoreros))
 
-    df_1 = pd.DataFrame({
-        'fechas': calendario[:25],
-        'cuotas': cuotas[:25],
-        'tesorero': tesoreros[:25],
-        'multas': multas[:25]
-    })
+    df_1 = pd.DataFrame(
+        {
+            "numeros": numeros[:25],
+            'fechas': calendario[:25],
+            'cuotas': cuotas[:25],
+            'tesorero': tesoreros[:25],
+            'multas': multas[:25]
+        }
+    )
 
-    df_2 = pd.DataFrame({
-        'fechas': calendario[25:],
-        'cuotas': cuotas[25:],
-        'tesorero': tesoreros[25:],
-        'multas': multas[25:]
-    })
+    df_2 = pd.DataFrame(
+        {
+            "numeros": numeros[25:],
+            'fechas': calendario[25:],
+            'cuotas': cuotas[25:],
+            'tesorero': tesoreros[25:],
+            'multas': multas[25:]
+        }
+    )
 
     return df_1, df_2
 
@@ -1307,9 +1314,9 @@ def modificar_valor_en_csv(
     else:
         df.at[index, columna] = nuevo_valor
 
-    df = df.loc[:, ~df.columns.str.contains('^Unnamed')]
+    df = df.loc[:, ~df.columns.str.contains("^Unnamed")]
     df.to_csv(st.session_state.nombre_df)
-    st.success('Valor modificado', icon="✅")
+    st.success("Valor modificado", icon="✅")
     st.balloons()
     time.sleep(0.5)
     st.rerun()
@@ -1408,7 +1415,7 @@ def menu_para_insertar_socio(
             puestos=puestos,
             numero_telefonico=telefono
         )
-        st.toast('Nuevo socio añadido', icon='🎉')
+        st.toast("Nuevo socio añadido", icon="🎉")
         time.sleep(1.5)
         st.rerun()
 
