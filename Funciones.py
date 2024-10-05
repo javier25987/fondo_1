@@ -1,5 +1,4 @@
 import time
-
 import pandas as pd
 import streamlit as st
 import subprocess
@@ -1421,4 +1420,10 @@ def menu_para_insertar_socio(
 
 
 if __name__ == "__main__":
-    pass
+    print(
+        """
+        se esta ejecutando el archivo de funciones por favor.
+        por favor no continue, este archivo solo contiene las 
+        funciones necesarias para el programa.
+        """
+    )
