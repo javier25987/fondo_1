@@ -1,7 +1,7 @@
 import json
 import streamlit as st
 import pandas as pd
-import Funciones
+import funciones.general as Funciones
 
 st.set_page_config(layout="wide")
 

@@ -2,7 +2,7 @@ import json
 import streamlit as st
 import datetime
 import os
-import Funciones
+import funciones.general as Funciones
 
 st.set_page_config(layout="wide")
 
@@ -34,7 +34,7 @@ st.session_state.usuario_actual_rifas = -1
 st.title('Menu de inicio')
 
 tab_1, tab_2 = st.tabs(
-    ['Que es el menu?', 'Funciones extra']
+    ['Que es el menu?', 'funciones extra']
 )
 
 with tab_1:
