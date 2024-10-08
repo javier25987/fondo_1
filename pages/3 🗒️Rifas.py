@@ -1,9 +1,9 @@
 import streamlit as st
 import pandas as pd
-import funciones.general as Funciones
+import Funciones
 import json
 
-from funciones.general import crear_tablas_talonarios
+from Funciones import crear_tablas_talonarios
 
 st.set_page_config(layout="wide")
 

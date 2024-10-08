@@ -2,7 +2,7 @@ import json
 import streamlit as st
 import datetime
 import os
-import funciones.general as Funciones
+import Funciones
 
 st.set_page_config(layout="wide")
 
@@ -33,9 +33,7 @@ st.session_state.usuario_actual_rifas = -1
 
 st.title('Menu de inicio')
 
-tab_1, tab_2 = st.tabs(
-    ['Que es el menu?', 'funciones extra']
-)
+tab_1, tab_2 = st.tabs(['Que es el menu?', 'Funciones extra'])
 
 with tab_1:
     c_1, c_2 = st.columns([2, 3])
@@ -61,15 +59,11 @@ with tab_1:
                     f.close()
 
                 st.write('Guardando en GitHub...')
-                Funciones.ejecutar_comando_git(
-                    ["git", "push"]
-                )
-                status.update(
-                    label="Los datos han sido cargados!",
-                    state="complete",
-                    expanded=False
-                )
+                Funciones.ejecutar_comando_git(["git", "push"])
 
+                status.update(
+                    label="Los datos han sido cargados!", state="complete", expanded=False
+                )
         st.link_button('🔗 Abrir GitHub', ajustes['enlace repo'])
 
     with c_2:
@@ -92,7 +86,5 @@ with tab_2:
 
     if st.button("Cargar Multas"):
         Funciones.arreglar_todos_los_asuntos()
-        st.success(
-            "Proceso finalizado, todas las multas han sido cargadas.",
-            icon="✅"
-        )
+        st.success("Proceso finalizado, todas las multas han sido cargadas.",
+                   icon="✅")

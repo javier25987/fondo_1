@@ -1,4 +1,5 @@
 import time
+
 import pandas as pd
 import streamlit as st
 import subprocess
@@ -6,32 +7,43 @@ import datetime
 import json
 import os
 
-def modificar_string(
-    s: str,
-    index_s: int,
-    new_elemento: str
-):
-    s= list(s)
-    s[index_s] = new_elemento
-    return "".join(s)
+def modificar_string(s: str, index_s: int, new_elemento: str):
+    lista_s = [i for i in s]
+    lista_s[index_s] = new_elemento
+    return "".join(lista_s)
+
+def fecha_string_formato(fecha: str):
+    s = fecha.split("/")
+    s = list(map(int, s))
+    return datetime.datetime(*s)
 
 
-def string_a_fecha(fecha: str):
-    return datetime.datetime(
-        *map(int, fecha.split("/"))
-    )
+def crear_listado_de_fechas(primera_fecha: str, dobles: list) -> list:
+    fecha = fecha_string_formato(primera_fecha)
+    dias = 7
+    fechas = []
+    n_semanas = 50 - len(dobles)
+
+    for i in range(0, n_semanas):
+        new_f = fecha + datetime.timedelta(days=dias * i)
+        f_new = new_f.strftime('%Y/%m/%d/%H')
+        if f_new in dobles:
+            fechas.append(f_new)
+        fechas.append(f_new)
+
+    for i in dobles:
+        if i not in fechas:
+            return ['-']
+
+    return fechas
 
 
-def insertar_socios(
-    nombre: str = "",
-    puestos: int = 1,
-    numero_telefonico: str = ""
-):
-    if numero_telefonico == "":
-        numero_telefonico = "_"
+def insertar_socios(nombre: str = '', puestos: int = 1, numero_telefonico: str = ''):
+    if numero_telefonico == '':
+        numero_telefonico = '_'
     nombre = nombre.lower()
 
-    with open("../ajustes.json", "r") as f:
+    with open('ajustes.json', 'r') as f:
         ajustes = json.load(f)
         f.close()
 
@@ -79,7 +91,7 @@ def insertar_socios(
 
     ajustes['usuarios'] += 1
 
-    with open('../ajustes.json', 'w') as f:
+    with open('ajustes.json', 'w') as f:
         json.dump(ajustes, f)
         f.close()
 
@@ -103,7 +115,7 @@ def r_cuotas(s):
 
 
 def tablas_para_cuotas_y_multas(index: int = 0):
-    with open('../ajustes.json', 'r') as f:
+    with open('ajustes.json', 'r') as f:
         ajustes = json.load(f)
         calendario = ajustes['calendario']
         f.close()
@@ -147,7 +159,7 @@ def tablas_para_cuotas_y_multas(index: int = 0):
 def crear_data_frame_principal():
     nombre = 'FONDO_'
     try:
-        with open('../ajustes.json', 'r') as file:
+        with open('ajustes.json', 'r') as file:
             ajustes = json.load(file)
             lineas = str(ajustes['numero de creacion'])
             file.close()
@@ -157,7 +169,7 @@ def crear_data_frame_principal():
         ajustes['numero de creacion'] += 1
         ajustes['nombre df'] = nombre
 
-        with open('../ajustes.json', 'w') as file:
+        with open('ajustes.json', 'w') as file:
             json.dump(ajustes, file)
             file.close()
 
@@ -259,7 +271,7 @@ def crear_ajustes_de_el_programa():
                "r4 fecha de cierre": ""
                }
 
-    with open('../ajustes.json', 'w') as j_a:
+    with open('ajustes.json', 'w') as j_a:
         json.dump(ajustes, j_a)
         j_a.close()
 
@@ -277,7 +289,7 @@ def sumar_una_multa(s: list, semana: int = 0):
 
 
 def arreglar_asuntos(index_usuario: int):
-    with open('../ajustes.json', 'r') as f:
+    with open('ajustes.json', 'r') as f:
         ajustes = json.load(f)
         calendario = ajustes['calendario'].split('-')
         f.close()
@@ -523,7 +535,7 @@ def crear_nuevo_cheque(
 
 
 def calendario_n_meses():
-    with open('../ajustes.json', 'r') as f:
+    with open('ajustes.json', 'r') as f:
         ajustes = json.load(f)
         f.close()
 
@@ -597,7 +609,7 @@ def generar_prestamo(
 ):
     df = pd.read_csv(st.session_state.nombre_df)
 
-    with open('../ajustes.json', 'r') as f:
+    with open('ajustes.json', 'r') as f:
         ajustes = json.load(f)
         f.close()
 
@@ -784,7 +796,7 @@ def formato_de_prestamo(
 
     st.write(f'Valor de el prestamo: {'{:,}'.format(valor_de_el_prestamo)}')
 
-    with open('../ajustes.json', 'r') as f:
+    with open('ajustes.json', 'r') as f:
         ajustes = json.load(f)
         f.close()
 
@@ -1126,7 +1138,7 @@ def cargar_talonario(index: int, columnas: int, filas: int, rifa: str):
     st.header(f'№ {df['numero'][index]}: {df['nombre'][index].title()}')
     st.divider()
 
-    with open('../ajustes.json', 'r') as f:
+    with open('ajustes.json', 'r') as f:
         ajustes = json.load(f)
         f.close()
 
@@ -1232,7 +1244,7 @@ def crear_tablas_talonarios(boletas: str):
 
 
 def cerrar_una_rifa(rifa: str):
-    with open('../ajustes.json', 'r') as f:
+    with open('ajustes.json', 'r') as f:
         ajustes = json.load(f)
         f.close()
 
@@ -1240,7 +1252,7 @@ def cerrar_una_rifa(rifa: str):
 
     if ajustes[f"r{rifa} estado"]:
         fecha_de_cierre = ajustes[f"r{rifa} fecha de cierre"]
-        fecha_de_cierre = string_a_fecha(fecha_de_cierre)
+        fecha_de_cierre = fecha_string_formato(fecha_de_cierre)
 
         if fecha_de_cierre < datetime.datetime.now():
             print(f"Iniciando el cierre de la rifa {rifa}")
@@ -1262,7 +1274,7 @@ def cerrar_una_rifa(rifa: str):
             df.to_csv(st.session_state.nombre_df)
 
             ajustes[f"r{rifa} estado"] = False
-            with open('../ajustes.json', 'w') as f:
+            with open('ajustes.json', 'w') as f:
                 json.dump(ajustes, f)
                 f.close()
 
@@ -1281,7 +1293,7 @@ def cerrar_una_rifa(rifa: str):
 
 
 def arreglar_todos_los_asuntos():
-    with open('../ajustes.json', 'r') as f:
+    with open('ajustes.json', 'r') as f:
         ajustes = json.load(f)
         f.close()
 
@@ -1409,10 +1421,4 @@ def menu_para_insertar_socio(
 
 
 if __name__ == "__main__":
-    print(
-        """
-        se esta ejecutando el archivo de funciones por favor.
-        por favor no continue, este archivo solo contiene las 
-        funciones necesarias para el programa.
-        """
-    )
+    pass
